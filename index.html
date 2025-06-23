@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Paushna.in</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+      integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header>
+      <div class="navbar">
+        <div class="nav-logo border">
+          <div class="logo">
+            <a href="#home"></a>
+          </div>
+        </div>
+        <div class="nav-address border">
+          <p class="add_first">Deliver to</p>
+          <div class="add-icon">
+            <i class="fa-solid fa-location-dot"></i>
+            <p class="add_sec">India</p>
+          </div>
+        </div>
+        <div class="nav-search">
+          <select class="search-select">
+            <option>ALL</option>
+          </select>
+          <input
+            type="text"
+            id="search-bar"
+            placeholder="Search for item"
+            oninput="searchProducts()"
+            class="search-input"
+          />
+          <div class="search_icon">
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </div>
+        </div>
+        <div class="nav-signin border">
+          <a href="login.html">Hello, Sign-in</a>
+          <p class="nav-sec">Account & lists</p>
+        </div>
+        <div class="nav-return border">
+          <p><span>Returns</span></p>
+          <p class="nav-sec">& Orders</p>
+        </div>
+        <div class="nav-cart border">
+          <i class="fa-solid fa-cart-shopping"></i>
+          <a href="cart.html">Cart</a>
+        </div>
+        <ul class="nav-links">
+          <li id="account-area">
+            <div class="account-section" onclick="openAccountPopup()">
+              <i class="fas fa-user"></i>
+              <span id="account-name">Hello, User</span>
+            </div>
+          </li>
+        </ul>
+        <div id="account-popup" class="popup-overlay">
+          <div class="popup-content">
+            <span class="close-btn" onclick="closeAccountPopup()">&times;</span>
+            <h2>My Account</h2>
+            <p><strong>User:</strong> <span id="popup-username"></span></p>
+
+            <hr />
+
+            <!-- My Orders Section -->
+            <h3>My Orders</h3>
+            <ul id="orders-list">
+              <!-- Orders will be dynamically loaded here -->
+            </ul>
+
+            <hr />
+
+            <!-- My Cart Section -->
+            <h3>My Cart</h3>
+            <ul id="cart-list">
+              <!-- Cart items will be dynamically loaded here -->
+            </ul>
+
+            <!-- Logout Button -->
+            <button class="logout-btn" onclick="logout()">Logout</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-all">
+          <i class="fa-solid fa-bars"></i>
+          All
+        </div>
+        <ul class="panel-ops">
+          <li><a href="#shop">SHOP</a></li>
+          <li><a href="mens.html">MENS</a></li>
+          <li><a href="women.html">WOMEN</a></li>
+          <li><a href="accessories.html">ACCESSORIES</a></li>
+          <li><a href="#custom">CUSTOM</a></li>
+        </ul>
+        <div class="panel-deal">
+          <a href="#deals">DEALS & OFFERS</a>
+        </div>
+      </div>
+    </header>
+    <!--HERO SECTION-->
+    <section id="SHOP" class="hero-section">
+      <div class="hero-content">
+        <h1>Your Style, Our PASSION</h1>
+        <p>We Offer a huge variety of stylish clothes and accessories.</p>
+        <a href="#designs" class="btn">EXPLORE DESIGNS</a>
+      </div>
+    </section>
+    <!-- Services Section -->
+    <section id="designs" class="design-section">
+      <h2>Our Designs</h2>
+      <div class="design-container">
+        <div class="design-item">
+          <h3>MENS</h3>
+          <img src="t3.jpg" />
+          <a href="mens.html">MENS</a>
+        </div>
+        <div class="design-item">
+          <h3>WOMEN</h3>
+          <img src="images (1).jpeg" />
+          <a href="women.html">WOMENS</a>
+        </div>
+        <div class="design-item">
+          <h3>ACCESSORIES</h3>
+          <img src="men-fashion-accessories-still-life-260nw-325767083.webp" />
+          <a href="accessories.html">ACCESSORIES</a>
+        </div>
+      </div>
+      <script>
+        // USER ACCOUNT LOGIC
+        const user = localStorage.getItem("user");
+        const accountSection = document.getElementById("account-link");
+        const loginNavLink = document.getElementById("login-nav-link");
+        const accountName = document.getElementById("account-name");
+
+        if (user) {
+          accountName.textContent = `Hello, ${user}`;
+          accountSection.style.display = "flex";
+          loginNavLink.style.display = "none";
+        } else {
+          accountSection.style.display = "none";
+          loginNavLink.style.display = "block";
+        }
+
+        function logout() {
+          localStorage.removeItem("user");
+          window.location.reload();
+        }
+
+        // PRODUCT SEARCH FUNCTION
+        function searchProducts() {
+          const query = document
+            .getElementById("search-bar")
+            .value.toLowerCase();
+          const products = document.querySelectorAll(".product-card");
+
+          products.forEach((product) => {
+            const title = product
+              .querySelector(".product-title")
+              .textContent.toLowerCase();
+            const Material = product
+              .querySelector(".product-material")
+              .textContent.toLowerCase();
+
+            if (title.includes(query) || Material.includes(query)) {
+              product.style.display = "block";
+            } else {
+              product.style.display = "none";
+            }
+          });
+        }
+        // Show popup
+        function openAccountPopup() {
+          document.getElementById("account-popup").style.display = "flex";
+          document.getElementById("popup-username").textContent =
+            localStorage.getItem("user") || "Guest";
+
+          loadOrders();
+          loadCart();
+        }
+
+        // Hide popup
+        function closeAccountPopup() {
+          document.getElementById("account-popup").style.display = "none";
+        }
+
+        // Logout function
+        function logout() {
+          localStorage.removeItem("user");
+          window.location.reload();
+        }
+
+        // Load Orders
+        function loadOrders() {
+          const ordersList = document.getElementById("orders-list");
+          ordersList.innerHTML = "";
+
+          const orders = JSON.parse(localStorage.getItem("orders")) || [];
+
+          if (orders.length === 0) {
+            ordersList.innerHTML = "<li>No orders placed yet.</li>";
+          } else {
+            orders.forEach((order) => {
+              let orderHTML = `<li>📦 <strong>${
+                order.item
+              }</strong> - ₹${order.price.toLocaleString()}<br>
+          Status: ${order.status} | Ordered on: ${new Date(
+                order.date
+              ).toLocaleDateString()}</li>`;
+              ordersList.innerHTML += orderHTML;
+            });
+          }
+        }
+
+        // Load Cart
+        function loadCart() {
+          const cartList = document.getElementById("cart-list");
+          cartList.innerHTML = "";
+
+          const cartItems = JSON.parse(localStorage.getItem("cart")) || [];
+
+          if (cartItems.length === 0) {
+            cartList.innerHTML = "<li>No items in cart.</li>";
+          } else {
+            cartItems.forEach((item, index) => {
+              const li = document.createElement("li");
+              li.innerHTML = `📦 ${item.name} - ₹${item.price.toLocaleString()} 
+          <button onclick="moveToOrders(${index})">Move to Orders</button>`;
+              cartList.appendChild(li);
+            });
+          }
+        }
+
+        // Move item from Cart to Orders
+        function moveToOrders(cartIndex) {
+          const cartItems = JSON.parse(localStorage.getItem("cart")) || [];
+          const orders = JSON.parse(localStorage.getItem("orders")) || [];
+
+          const item = cartItems.splice(cartIndex, 1)[0];
+          const order = {
+            orderNumber: Date.now(),
+            item: item.name,
+            price: item.price,
+            status: "Pending",
+            date: new Date().toISOString(),
+          };
+
+          orders.push(order);
+          localStorage.setItem("orders", JSON.stringify(orders));
+          localStorage.setItem("cart", JSON.stringify(cartItems));
+
+          loadCart();
+          loadOrders();
+        }
+      </script>
+      <div id="account-popup" class="popup-overlay">
+        <div class="popup-content">
+          <span class="close-btn" onclick="closeAccountPopup()">&times;</span>
+          <h2>My Account</h2>
+          <p><strong>User:</strong> <span id="popup-username"></span></p>
+          <hr />
+          <h3>My Orders</h3>
+          <ul id="orders-list">
+            <h3>My Orders</h3>
+            <div id="dynamic-orders">
+              <p>Loading your orders...</p>
+            </div>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>
